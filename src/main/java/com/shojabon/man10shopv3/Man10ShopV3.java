@@ -3,6 +3,7 @@ package com.shojabon.man10shopv3;
 import com.shojabon.man10shopv3.commands.Man10ShopV3Command;
 import com.shojabon.man10shopv3.dataClass.QueueRequestObject;
 import com.shojabon.man10shopv3.listeners.SignListeners;
+import com.shojabon.man10socket.Man10Socket;
 import com.shojabon.mcutils.Utils.VaultAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Bukkit;
@@ -38,6 +39,22 @@ public final class Man10ShopV3 extends JavaPlugin implements @NotNull Listener {
     public static ConcurrentHashMap<UUID, Boolean> transactionLock = new ConcurrentHashMap<>();
     public static boolean pluginEnabled = true;
 
+    private int resolveSocketPort() {
+        int configPort = this.getConfig().getInt("api.socketPort", -1);
+        if (configPort > 0) {
+            return configPort;
+        }
+
+        String endpoint = this.getConfig().getString("api.endpoint", "");
+        try {
+            java.net.URI uri = new java.net.URI(endpoint);
+            if (uri.getPort() > 0) {
+                return uri.getPort();
+            }
+        } catch (Exception ignored) {
+        }
+        return 6789;
+    }
 
     public void locallyQueuedRequestProcessThread(){
         while (pluginEnabled){
@@ -72,6 +89,7 @@ public final class Man10ShopV3 extends JavaPlugin implements @NotNull Listener {
         config = getConfig();
         prefix = getConfig().getString("prefix");
         api = new Man10ShopV3API(this);
+        Man10Socket.initialize(this, resolveSocketPort());
 
         vault = new VaultAPI();
 
@@ -105,5 +123,6 @@ public final class Man10ShopV3 extends JavaPlugin implements @NotNull Listener {
     public void onDisable() {
         // Plugin shutdown logic
         pluginEnabled = false;
+        Man10Socket.shutdown();
     }
 }

@@ -60,5 +60,5 @@ mvn clean package
 
 ## 補足
 
-- `plugin.yml` では `Man10Socket` も必須依存です。
-- ビルド時に `com.shojabon.man10socket` 未解決エラーが出る場合は、`Man10Socket` jar も同様にローカル Maven へ登録し、`pom.xml` に依存を追加してください。
+- ソケット通信実装 (`com.shojabon.man10socket.Man10Socket`) はこのリポジトリ内に同梱しています。
+- ポートは `config.yml` の `api.socketPort` を参照します（未設定時は `api.endpoint` のポート、さらに未指定なら `6789`）。

@@ -3,6 +3,6 @@ version: '${project.version}'
 main: com.shojabon.man10shopv3.Man10ShopV3
 api-version: 1.19
 authors: [ Sho0 ]
-depend: [SCommandRouter, Man10Socket]
+depend: [SCommandRouter]
 commands:
   mshop:
