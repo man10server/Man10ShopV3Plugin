@@ -4,7 +4,7 @@ Man10ShopV3 の Maven ビルド用リポジトリです。
 
 ## 前提
 
-- Java 8
+- Java 21
 - Maven 3.8+
 - 依存 jar を `libs/` に配置済み
 
