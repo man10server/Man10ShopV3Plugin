@@ -38,10 +38,9 @@ public class Man10ShopV3API {
         payload.put("type", "request");
         payload.put("data", jsonInput);
         JSONObject a = Man10Socket.send(payload, true);
-        // replace key "message" to "data"
-        if(a.has("message")){
+        // Keep "message" for existing callers and also expose it as "data" when absent.
+        if(a.has("message") && !a.has("data")){
             a.put("data", a.get("message"));
-            a.remove("message");
         }
         return a;
 //
