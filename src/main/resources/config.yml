@@ -3,4 +3,5 @@ serverName: "man10"
 api:
   endpoint: "http://localhost:1234"
   key: "testa"
+  socketPort: 6789
 prefix: "§6[§eMan10Shop§dV3§6]"
