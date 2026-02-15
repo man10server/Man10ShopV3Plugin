@@ -81,14 +81,6 @@ public class EditableShopSelectorMenu extends CategoricalSInventoryMenu {
 
     public void afterRenderMenu() {
         super.afterRenderMenu();
-//        if(player.hasPermission("man10shopv2.admin.agent") && !player.hasPermission("man10shopv2.admin.debug")){
-//            SInventoryItem debug = new SInventoryItem(new SItemStack(Material.COMMAND_BLOCK).setDisplayName("§c§lデバッグ").build()).clickable(false);
-//            debug.setEvent(e -> {
-//                new AgentActionMenu(player, plugin).open(player);
-//            });
-//            setItem(47, debug);
-//            renderInventory();
-//        }
     }
 
 }
