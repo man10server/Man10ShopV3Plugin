@@ -41,19 +41,10 @@ public final class Man10ShopV3 extends JavaPlugin implements @NotNull Listener {
 
     private int resolveSocketPort() {
         int configPort = this.getConfig().getInt("api.socketPort", -1);
-        if (configPort > 0) {
-            return configPort;
+        if (configPort <= 0) {
+            throw new IllegalStateException("api.socketPort が config.yml に設定されていません");
         }
-
-        String endpoint = this.getConfig().getString("api.endpoint", "");
-        try {
-            java.net.URI uri = new java.net.URI(endpoint);
-            if (uri.getPort() > 0) {
-                return uri.getPort();
-            }
-        } catch (Exception ignored) {
-        }
-        return 6789;
+        return configPort;
     }
 
     public void locallyQueuedRequestProcessThread(){

@@ -4,7 +4,7 @@ Man10ShopV3 の Maven ビルド用リポジトリです。
 
 ## 前提
 
-- Java 8
+- Java 21
 - Maven 3.8+
 - 依存 jar を `libs/` に配置済み
 
@@ -57,6 +57,26 @@ mvn clean package
 ```
 
 成果物は `target/` に出力されます。
+
+## 導入方法
+
+1. 依存プラグインを `plugins/` に配置します。
+- `SCommandRouter`
+- `McUtils`
+
+2. 本プラグイン jar を `plugins/` に配置します。
+- このリポジトリでビルドした `target/` 配下の jar を配置
+
+3. サーバーを一度起動し、`plugins/Man10ShopV3/config.yml` を生成します。
+
+4. `config.yml` を環境に合わせて設定します。
+- `serverName`: サーバー識別名
+- `api.endpoint`: API エンドポイント
+- `api.key`: API キー
+- `api.socketPort`: ソケット待ち受けポート（未指定時は `api.endpoint` のポート、さらに未指定なら `6789`）
+
+5. サーバーを再起動し、起動ログにエラーがないことを確認します。
+- コマンド `/mshop` が登録されていれば導入完了です。
 
 ## 補足
 

@@ -1,7 +1,7 @@
 name: Man10ShopV3
 version: '${project.version}'
 main: com.shojabon.man10shopv3.Man10ShopV3
-api-version: 1.19
+api-version: 1.21
 authors: [ Sho0 ]
 depend: [SCommandRouter]
 commands:
