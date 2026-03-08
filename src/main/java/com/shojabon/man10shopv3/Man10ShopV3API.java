@@ -33,11 +33,10 @@ public class Man10ShopV3API {
     public static JSONObject httpRequest(String endpoint, String method, JSONObject jsonInput) {
         JSONObject payload = new JSONObject();
         String pathHeading = Man10ShopV3.config.getString("api.endpoint");
-        payload.put("target", "Man10ShopV3");
         payload.put("path", endpoint.replace(pathHeading, ""));
         payload.put("type", "request");
         payload.put("data", jsonInput);
-        JSONObject a = Man10Socket.send(payload, true);
+        JSONObject a = Man10Socket.send("Man10ShopV3", payload, true);
         // Keep "message" for existing callers and also expose it as "data" when absent.
         if(a.has("message") && !a.has("data")){
             a.put("data", a.get("message"));
