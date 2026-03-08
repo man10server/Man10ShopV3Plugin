@@ -37,6 +37,12 @@ public class Man10ShopV3API {
         payload.put("type", "request");
         payload.put("data", jsonInput);
         JSONObject a = Man10Socket.send("Man10ShopV3", payload, true);
+        if(a == null){
+            JSONObject failResponse = new JSONObject();
+            failResponse.put("status", "endpoint_error");
+            failResponse.put("message", "Man10SocketからAPIサーバーの応答を取得できませんでした");
+            return failResponse;
+        }
         // Keep "message" for existing callers and also expose it as "data" when absent.
         if(a.has("message") && !a.has("data")){
             a.put("data", a.get("message"));

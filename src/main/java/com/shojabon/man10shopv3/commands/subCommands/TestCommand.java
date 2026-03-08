@@ -33,6 +33,10 @@ public class TestCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Player p = (Player) sender;
         Man10Shop shop = Man10ShopV3.api.getShop("cdd68b45-5eaf-4b0c-a1fe-e291d41a274e", p);
+        if(shop == null){
+            Man10ShopV3API.warnMessage(p, "ショップ情報を取得できませんでした");
+            return true;
+        }
         JSONObject data = new JSONObject();
         data.put("amount", 1);
         for(int i = 0; i < 10000; i++){
