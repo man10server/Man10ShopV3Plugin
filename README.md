@@ -121,6 +121,17 @@ mvn clean package
 - コマンド `/mshop` が登録されていれば導入完了です。
 - `Man10Socket` 側も起動しており、API サーバー接続後に通信エラーが出ないことを確認してください
 
+9. `/mshop health` でヘルスチェックを実行します。
+- 権限 `man10shopv3.health` が必要です
+- `pluginEnabled`
+- `serverName`
+- `api.endpoint`
+- `Man10Socket` プラグインの有効状態
+- 接続中の socket client 数
+- `Man10ShopV3` という名前の API サーバークライアントが接続しているか
+- `API socket target: 未接続` と出る場合は、API サーバーが `Man10Socket` に接続できていないか、クライアント名が `Man10ShopV3` になっていません
+- `基本状態は正常です` と出れば、少なくとも設定値と Socket 接続状態は問題ありません
+
 ## 補足
 
 - `plugin.yml` では `Man10Socket` も必須依存です。
