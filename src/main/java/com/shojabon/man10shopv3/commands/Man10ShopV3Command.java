@@ -38,6 +38,14 @@ public class Man10ShopV3Command extends SCommandRouter {
 
         addCommand(
                 new SCommandObject()
+                        .prefix("health")
+                        .permission("man10shopv3.health")
+                        .explanation("プラグインとSocket接続の状態を確認")
+                        .executor(new HealthCheckCommand())
+        );
+
+        addCommand(
+                new SCommandObject()
                         .prefix("withdrawBuyShop")
                         .permission("man10shopv3.withdrawBuyShopMoney")
                         .explanation("販売系ショップのお金を引き出す")
