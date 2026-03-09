@@ -38,7 +38,6 @@ public final class Man10ShopV3 extends JavaPlugin implements @NotNull Listener {
     public static ConcurrentHashMap<UUID, Boolean> transactionLock = new ConcurrentHashMap<>();
     public static boolean pluginEnabled = true;
 
-
     public void locallyQueuedRequestProcessThread(){
         while (pluginEnabled){
             try{
