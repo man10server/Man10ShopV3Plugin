@@ -12,6 +12,7 @@ Man10ShopV3 の Maven ビルド用リポジトリです。
 
 - `com.shojabon:McUtils:2.0`
 - `com.shojabon:SCommandRouter:1.0-SNAPSHOT`
+- `com.shojabon:Man10Socket:1.0-SNAPSHOT`
 
 ## McUtils / SCommandRouter の追加方法
 
@@ -31,6 +32,13 @@ mvn install:install-file \
   -DartifactId=SCommandRouter \
   -Dversion=1.0-SNAPSHOT \
   -Dpackaging=jar
+
+mvn install:install-file \
+  -Dfile=libs/Man10Socket-1.0-SNAPSHOT.jar \
+  -DgroupId=com.shojabon \
+  -DartifactId=Man10Socket \
+  -Dversion=1.0-SNAPSHOT \
+  -Dpackaging=jar
 ```
 
 `pom.xml` には以下依存が追加済みです。
@@ -45,6 +53,12 @@ mvn install:install-file \
 <dependency>
     <groupId>com.shojabon</groupId>
     <artifactId>SCommandRouter</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>com.shojabon</groupId>
+    <artifactId>Man10Socket</artifactId>
     <version>1.0-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
@@ -63,6 +77,7 @@ mvn clean package
 1. 依存プラグインを `plugins/` に配置します。
 - `SCommandRouter`
 - `McUtils`
+- `Man10Socket`
 
 2. 本プラグイン jar を `plugins/` に配置します。
 - このリポジトリでビルドした `target/` 配下の jar を配置
@@ -78,7 +93,7 @@ mvn clean package
 5. サーバーを再起動し、起動ログにエラーがないことを確認します。
 - コマンド `/mshop` が登録されていれば導入完了です。
 
-## 補足
+## 注意事項
 
-- `plugin.yml` では `Man10Socket` も必須依存です。
-- ビルド時に `com.shojabon.man10socket` 未解決エラーが出る場合は、`Man10Socket` jar も同様にローカル Maven へ登録し、`pom.xml` に依存を追加してください。
+- Shop API サーバーは **PaperMC の起動が完了してから** 起動してください。PaperMC 起動前に Shop API サーバーを起動すると、Man10Socket のソケット接続が確立できず通信がタイムアウトします。
+- `plugin.yml` では `SCommandRouter` と `Man10Socket` が必須依存 (`depend`) として宣言されています。
