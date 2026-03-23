@@ -132,8 +132,9 @@ mvn clean package
 - `API socket target: 未接続` と出る場合は、API サーバーが `Man10Socket` に接続できていないか、クライアント名が `Man10ShopV3` になっていません
 - `基本状態は正常です` と出れば、少なくとも設定値と Socket 接続状態は問題ありません
 
-## 補足
+## 注意事項
 
-- `plugin.yml` では `Man10Socket` も必須依存です。
+- Shop API サーバーは **PaperMC の起動が完了してから** 起動してください。PaperMC 起動前に Shop API サーバーを起動すると、Man10Socket のソケット接続が確立できず通信がタイムアウトします。
+- `plugin.yml` では `SCommandRouter` と `Man10Socket` が必須依存 (`depend`) として宣言されています。
 - `api.endpoint` のホスト名やポート番号へ直接 HTTP 送信しているわけではありません。`Man10Socket` を経由して API サーバーへ流しています。
 - `api.endpoint` に `/api` のようなプレフィックスを入れても、現在の実装では `path` は `/shop/...` のまま送られます。
