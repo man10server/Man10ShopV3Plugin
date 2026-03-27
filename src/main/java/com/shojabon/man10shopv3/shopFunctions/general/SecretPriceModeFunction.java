@@ -33,7 +33,7 @@ public class SecretPriceModeFunction extends ShopFunction {
     public SInventoryItem getSettingItem(Player player, SInventoryItem item) {
         item.setEvent(e -> {
             //confirmation menu
-            BooleanInputMenu menu = new BooleanInputMenu(isEnabled(), "単品取引モード", plugin);
+            BooleanInputMenu menu = new BooleanInputMenu(isEnabled(), "値段非表示モード", plugin);
             menu.setOnClose(ee -> new SettingsMainMenu(player, shop, getDefinition().category(), plugin).open(player));
             menu.setOnCancel(ee -> new SettingsMainMenu(player, shop, getDefinition().category(), plugin).open(player));
             menu.setOnConfirm(bool -> {
