@@ -185,6 +185,9 @@ public class SignListeners implements @NotNull Listener {
 //            e.getPlayer().sendMessage(Man10ShopV3.prefix + "§c§l現在このプラグインは停止中です");
             return;
         }
+        //allowed world
+        if(!Man10ShopV3.config.getStringList("enabledWorlds").contains(e.getClickedBlock().getWorld().getName())) return;
+
 //        if(!e.getClickedBlock().getState().hasMetadata("isMan10ShopV3Sign")) return;
         Man10ShopV3.threadPool.execute(()->{
             if(requestProcessed.containsKey(e.getPlayer().getUniqueId())){
