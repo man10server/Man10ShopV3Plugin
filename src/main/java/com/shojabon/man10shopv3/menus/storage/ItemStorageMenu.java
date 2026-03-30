@@ -6,16 +6,12 @@ import com.shojabon.man10shopv3.menus.ShopMainMenu;
 import com.shojabon.mcutils.Utils.SInventory.SInventory;
 import com.shojabon.mcutils.Utils.SItemStack;
 import com.shojabon.mcutils.Utils.SStringBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ItemStorageMenu extends SInventory{
     
@@ -68,7 +64,7 @@ public class ItemStorageMenu extends SInventory{
         for(int i = 0; i < 6*9; i++){
             ItemStack item = activeInventory.getItem(i);
             if(item == null) continue;
-            if(!new SItemStack(item).getItemTypeMD5(true).equals(shop.targetItemFunction.getTargetItem().getItemTypeMD5(true))) {
+            if(!isTargetItem(item)) {
                 if(!estimate){
                     player.getInventory().addItem(item);
                 }
@@ -88,11 +84,7 @@ public class ItemStorageMenu extends SInventory{
             if(e.getCurrentItem() == null) return;
             if(e.getClickedInventory() == null) return;
             SItemStack item = new SItemStack(e.getCurrentItem());
-            if(!item.getItemTypeMD5(true).equals(new SItemStack(item.getTypeItem(true)).getItemTypeMD5(true))){
-                e.setCancelled(true);
-                return;
-            }
-            if(!item.getItemTypeMD5(true).equals(shop.targetItemFunction.getTargetItem().getItemTypeMD5(true))){
+            if(!isTargetItem(e.getCurrentItem())){
                 e.setCancelled(true);
                 return;
             }
@@ -125,4 +117,8 @@ public class ItemStorageMenu extends SInventory{
         setOnCloseEvent(ee -> new ShopMainMenu(player, shop, plugin).open(player));
     }
 
+    private boolean isTargetItem(ItemStack item){
+        if(item == null) return false;
+        return item.isSimilar(shop.targetItemFunction.getTargetTypeItem());
+    }
 }
