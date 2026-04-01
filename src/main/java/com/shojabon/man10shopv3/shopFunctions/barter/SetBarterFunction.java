@@ -9,17 +9,13 @@ import com.shojabon.man10shopv3.menus.settings.SettingsMainMenu;
 import com.shojabon.man10shopv3.menus.settings.innerSettings.BarterSettingMenu;
 import com.shojabon.mcutils.Utils.SInventory.SInventoryItem;
 import com.shojabon.mcutils.Utils.SItemStack;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 @ShopFunctionDefinition(
@@ -38,36 +34,66 @@ public class SetBarterFunction extends ShopFunction {
     }
 
     public List<ItemStack> getRequiredItems(){
+        return loadBarterItems("requiredItems");
+    }
+    public List<ItemStack> getResultItems(){
+        return loadBarterItems("resultItems");
+    }
+
+    private List<ItemStack> loadBarterItems(String key){
         List<ItemStack> result = new ArrayList<>();
 
-        JSONArray requiredItemsData = getFunctionData().getJSONArray("requiredItems");
-        for(int i = 0; i < requiredItemsData.length(); i++){
-            if(requiredItemsData.isNull(i)) {
+        JSONArray itemsData = getFunctionData().optJSONArray(key);
+        if(itemsData == null){
+            plugin.getLogger().warning("[SetBarterFunction] トレード設定リストが見つかりません: shopId=" + shop.getShopId() + ", key=" + key);
+            return result;
+        }
+
+        for(int i = 0; i < itemsData.length(); i++){
+            if(itemsData.isNull(i)) {
                 result.add(null);
                 continue;
             }
-            JSONObject itemData = requiredItemsData.getJSONObject(i);
-            SItemStack item = SItemStack.fromBase64(itemData.getString("typeBase64"));
-            item.setAmount(itemData.getInt("amount"));
+
+            JSONObject itemData = itemsData.optJSONObject(i);
+            if(itemData == null){
+                logInvalidItem(key, i, "エントリがオブジェクト形式ではありません");
+                result.add(null);
+                continue;
+            }
+
+            String typeBase64 = itemData.optString("typeBase64", null);
+            if(typeBase64 == null || typeBase64.isBlank()){
+                logInvalidItem(key, i, "typeBase64 がありません");
+                result.add(null);
+                continue;
+            }
+
+            SItemStack item = SItemStack.fromBase64(typeBase64);
+            if(item == null){
+                logInvalidItem(key, i, "typeBase64 のデコードに失敗しました");
+                result.add(null);
+                continue;
+            }
+
+            int amount = itemData.optInt("amount", 1);
+            item.setAmount(Math.max(amount, 1));
             result.add(item.build());
         }
         return result;
     }
-    public List<ItemStack> getResultItems(){
-        List<ItemStack> result = new ArrayList<>();
 
-        JSONArray requiredItemsData = getFunctionData().getJSONArray("resultItems");
-        for(int i = 0; i < requiredItemsData.length(); i++){
-            if(requiredItemsData.isNull(i)) {
-                result.add(null);
-                continue;
-            }
-            JSONObject itemData = requiredItemsData.getJSONObject(i);
-            SItemStack item = SItemStack.fromBase64(itemData.getString("typeBase64"));
-            item.setAmount(itemData.getInt("amount"));
-            result.add(item.build());
-        }
-        return result;
+    private void logInvalidItem(String key, int index, String reason){
+        plugin.getLogger().warning(
+                "[SetBarterFunction] トレードアイテムデータが不正です: shopId="
+                        + shop.getShopId()
+                        + ", key="
+                        + key
+                        + ", index="
+                        + index
+                        + ", 理由="
+                        + reason
+        );
     }
 
     public JSONArray itemStackListToJSONArray(List<ItemStack> items){

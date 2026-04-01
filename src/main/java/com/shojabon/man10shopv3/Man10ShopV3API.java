@@ -5,7 +5,7 @@ import com.shojabon.man10socket.Man10Socket;
 import com.shojabon.mcutils.Utils.SItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Item;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.json.JSONObject;
@@ -186,8 +186,24 @@ public class Man10ShopV3API {
 
 
     public static ItemStack JSONToItemStack(JSONObject data){
-        SItemStack sItemStack = SItemStack.fromBase64(data.getString("typeBase64"));
-        sItemStack.setAmount(data.getInt("amount"));
+        if(data == null){
+            Bukkit.getLogger().warning("[Man10ShopV3API] JSONToItemStack に null データが渡されました");
+            return new ItemStack(Material.AIR);
+        }
+
+        String typeBase64 = data.optString("typeBase64", null);
+        if(typeBase64 == null || typeBase64.isBlank()){
+            Bukkit.getLogger().warning("[Man10ShopV3API] アイテムJSONに typeBase64 がありません");
+            return new ItemStack(Material.AIR);
+        }
+
+        SItemStack sItemStack = SItemStack.fromBase64(typeBase64);
+        if(sItemStack == null){
+            Bukkit.getLogger().warning("[Man10ShopV3API] typeBase64 からアイテムの復元に失敗しました");
+            return new ItemStack(Material.AIR);
+        }
+
+        sItemStack.setAmount(Math.max(data.optInt("amount", 1), 1));
         return sItemStack.build();
     }
 
